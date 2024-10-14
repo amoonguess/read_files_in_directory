@@ -1,0 +1,28 @@
+import pandas as pd
+import os
+
+
+pd.set_option('display.max_columns', 500)
+
+# get file directories 
+def get_dir(path):
+    file_list = []
+    for dirname, _, filenames in os.walk(path):
+        for filename in filenames:
+            file_list.append(os.path.join(dirname, filename))
+            
+    return file_list
+
+
+# concat all data in the directory files to a dataframe
+def get_concat_data(file_paths):
+    flag = 0
+    concat_data = None
+    for file_path in file_paths:
+        if flag == 0:
+            concat_data = pd.read_csv(file_path)
+            flag = 1
+        elif flag == 1:
+            concat_data = pd.concat([concat_data, pd.read_csv(file_path)])
+            
+    return concat_data
